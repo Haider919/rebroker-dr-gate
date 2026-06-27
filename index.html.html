@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Datenraum-Zugang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rb-black:   #0e0e0e;
+      --rb-white:   #f7f6f3;
+      --rb-accent:  #c8a96e;
+      --rb-mid:     #3a3a3a;
+      --rb-border:  #d4d0c8;
+      --rb-light:   #eeece7;
+
+      --vp-navy:    #1a2744;
+      --vp-gold:    #b8963e;
+      --vp-white:   #f8f7f4;
+      --vp-border:  #ccc9be;
+      --vp-light:   #eceae4;
+      --vp-mid:     #4a4a4a;
+    }
+
+    html, body {
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── LAYOUT ─── */
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    header {
+      padding: 28px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+
+    main {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 20px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 620px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .card-head {
+      padding: 32px 40px 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-body {
+      padding: 36px 40px;
+      background: var(--bg);
+    }
+
+    .card-foot {
+      padding: 24px 40px;
+      border-top: 1px solid var(--border);
+    }
+
+    footer {
+      padding: 20px 40px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      opacity: 0.55;
+      text-align: center;
+    }
+
+    /* ─── PROPERTY META ─── */
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      opacity: 0.55;
+    }
+
+    .deal-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .deal-address {
+      font-size: 13px;
+      opacity: 0.6;
+      margin-bottom: 20px;
+    }
+
+    .meta-row {
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .meta-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.45;
+    }
+
+    .meta-value {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* ─── SECTION TITLES ─── */
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      opacity: 0.5;
+    }
+
+    /* ─── CHECKBOXES ─── */
+    .check-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .check-item {
+      display: grid;
+      grid-template-columns: 20px 1fr;
+      gap: 14px;
+      align-items: start;
+      cursor: pointer;
+    }
+
+    .check-item input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1.5px solid var(--accent);
+      border-radius: 2px;
+      margin-top: 2px;
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+
+    .check-item input[type="checkbox"]:checked {
+      background: var(--accent);
+    }
+
+    .check-item input[type="checkbox"]:checked::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 1px;
+      width: 6px;
+      height: 10px;
+      border: 2px solid #fff;
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg);
+    }
+
+    .check-text {
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: var(--text);
+    }
+
+    .check-text strong {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 3px;
+      font-size: 13px;
+    }
+
+    .commission-box {
+      margin-top: 8px;
+      padding: 10px 14px;
+      background: var(--light);
+      border-left: 3px solid var(--accent);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* ─── BUTTON ─── */
+    .btn-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 16px 24px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.32;
+      cursor: not-allowed;
+    }
+
+    .btn-primary:not(:disabled):hover {
+      opacity: 0.88;
+    }
+
+    .btn-primary:not(:disabled):active {
+      transform: scale(0.99);
+    }
+
+    .btn-arrow {
+      font-size: 16px;
+      transition: transform 0.2s;
+    }
+
+    .btn-primary:not(:disabled):hover .btn-arrow {
+      transform: translateX(4px);
+    }
+
+    /* ─── GREETING ─── */
+    .greeting {
+      font-size: 13px;
+      opacity: 0.6;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ─── STATUS STATES ─── */
+    .state-loading, .state-success, .state-error, .state-already {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .state-loading .spinner {
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .state-success .icon, .state-error .icon, .state-already .icon {
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+
+    .state-title {
+      font-weight: 600;
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .state-sub {
+      font-size: 13px;
+      opacity: 0.6;
+    }
+
+    /* ─── BRAND: REBROKER ─── */
+    body.brand-rebroker {
+      --bg: var(--rb-white);
+      --text: var(--rb-black);
+      --accent: var(--rb-accent);
+      --border: var(--rb-border);
+      --light: var(--rb-light);
+      --mid: var(--rb-mid);
+      background: var(--rb-white);
+      color: var(--rb-black);
+    }
+
+    body.brand-rebroker header {
+      background: var(--rb-black);
+    }
+
+    body.brand-rebroker .logo-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--rb-white);
+    }
+
+    body.brand-rebroker .logo-sub {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--rb-accent);
+      margin-top: 2px;
+    }
+
+    body.brand-rebroker .header-right {
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      text-align: right;
+    }
+
+    body.brand-rebroker .card {
+      background: #fff;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    }
+
+    body.brand-rebroker .card-head {
+      background: #fff;
+    }
+
+    body.brand-rebroker .btn-primary {
+      background: var(--rb-black);
+      color: #fff;
+    }
+
+    body.brand-rebroker footer {
+      color: var(--rb-black);
+    }
+
+    /* ─── BRAND: VON POLL ─── */
+    body.brand-vonpoll {
+      --bg: var(--vp-white);
+      --text: var(--vp-navy);
+      --accent: var(--vp-gold);
+      --border: var(--vp-border);
+      --light: var(--vp-light);
+      --mid: var(--vp-mid);
+      background: var(--vp-white);
+      color: var(--vp-navy);
+    }
+
+    body.brand-vonpoll header {
+      background: var(--vp-navy);
+    }
+
+    body.brand-vonpoll .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--vp-white);
+    }
+
+    body.brand-vonpoll .logo-sub {
+      font-size: 9.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--vp-gold);
+      margin-top: 3px;
+    }
+
+    body.brand-vonpoll .header-right {
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      text-align: right;
+    }
+
+    body.brand-vonpoll .card {
+      background: #fff;
+      box-shadow: 0 2px 20px rgba(26,39,68,0.08);
+    }
+
+    body.brand-vonpoll .card-head {
+      background: #fff;
+    }
+
+    body.brand-vonpoll .btn-primary {
+      background: var(--vp-navy);
+      color: #fff;
+    }
+
+    body.brand-vonpoll footer {
+      color: var(--vp-navy);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 540px) {
+      header { padding: 20px 20px; }
+      .card-head, .card-body, .card-foot { padding-left: 24px; padding-right: 24px; }
+      .meta-row { gap: 16px; }
+      footer { padding: 16px 20px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body class="brand-rebroker" id="page-body">
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header>
+    <div>
+      <div class="logo-text" id="logo-name">REBROKER</div>
+      <div class="logo-sub" id="logo-sub">Investivo GmbH · Leipzig</div>
+    </div>
+    <div class="header-right" id="header-right">
+      Vertraulicher Datenraum-Zugang<br>
+      <span id="header-date"></span>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <div class="card">
+
+      <!-- PROPERTY INFO -->
+      <div class="card-head">
+        <div class="eyebrow">Objekt</div>
+        <div class="deal-name" id="deal-name">Wird geladen…</div>
+        <div class="deal-address" id="deal-address"></div>
+        <div class="meta-row" id="meta-row" style="display:none">
+          <div class="meta-item">
+            <span class="meta-label">Kaufpreis</span>
+            <span class="meta-value" id="meta-price">—</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Wohneinheiten</span>
+            <span class="meta-value" id="meta-units">—</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Deal-ID</span>
+            <span class="meta-value" id="meta-dealid">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONFIRMATION FORM -->
+      <div class="card-body">
+
+        <div class="greeting" id="greeting-line">Guten Tag,</div>
+
+        <!-- Main form (shown by default) -->
+        <div id="form-area">
+          <div class="section-title">Pflichtbestätigung vor Datenraum-Zugang</div>
+
+          <div class="check-list">
+
+            <!-- Checkbox 1: Erstnachweis -->
+            <label class="check-item">
+              <input type="checkbox" id="cb1" onchange="updateButton()" />
+              <div class="check-text">
+                <strong id="cb1-title">Erstnachweis bestätigt</strong>
+                <span id="cb1-text">Ich bestätige, dieses Objekt erstmalig durch REBROKER (Investivo GmbH) nachgewiesen bekommen zu haben.</span>
+              </div>
+            </label>
+
+            <!-- Checkbox 2: Provision -->
+            <label class="check-item">
+              <input type="checkbox" id="cb2" onchange="updateButton()" />
+              <div class="check-text">
+                <strong id="cb2-title">Provisionspflicht bestätigt</strong>
+                <span id="cb2-text">Ich bestätige, dass diese Transaktion provisionspflichtig ist und nehme die Maklerprovision zur Kenntnis.</span>
+                <div class="commission-box" id="commission-box" style="display:none">
+                  Käuferprovision: <strong>6 % netto zzgl. MwSt. = 7,14 % inkl. MwSt.</strong><br>
+                  Fällig bei Abschluss des notariellen Kaufvertrags.
+                </div>
+              </div>
+            </label>
+
+          </div>
+
+          <div class="card-foot" style="padding: 0; border: none;">
+            <button class="btn-primary" id="submit-btn" disabled onclick="handleSubmit()">
+              Zum Datenraum <span class="btn-arrow">→</span>
+            </button>
+            <p style="font-size:11px; opacity:0.4; text-align:center; margin-top:12px; line-height:1.5;">
+              Mit dem Klick auf „Zum Datenraum" wird Ihre Bestätigung mit Zeitstempel protokolliert und als PDF archiviert.
+            </p>
+          </div>
+        </div>
+
+        <!-- Loading state -->
+        <div class="state-loading" id="state-loading">
+          <div class="spinner"></div>
+          <div class="state-title">Bestätigung wird verarbeitet…</div>
+          <div class="state-sub">Bitte warten Sie einen Moment.</div>
+        </div>
+
+        <!-- Success state -->
+        <div class="state-success" id="state-success">
+          <div class="icon">✅</div>
+          <div class="state-title">Bestätigung erhalten</div>
+          <div class="state-sub">Sie werden jetzt in den Datenraum weitergeleitet…</div>
+        </div>
+
+        <!-- Already confirmed state -->
+        <div class="state-already" id="state-already">
+          <div class="icon">🔓</div>
+          <div class="state-title">Zugang bereits bestätigt</div>
+          <div class="state-sub">Sie werden direkt in den Datenraum weitergeleitet…</div>
+        </div>
+
+        <!-- Error state -->
+        <div class="state-error" id="state-error">
+          <div class="icon">⚠️</div>
+          <div class="state-title">Fehler aufgetreten</div>
+          <div class="state-sub" id="error-msg">Bitte versuchen Sie es erneut oder wenden Sie sich an uns.</div>
+          <button class="btn-primary" style="margin-top:20px; max-width:200px; margin-left:auto; margin-right:auto;" onclick="resetForm()">Erneut versuchen</button>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer id="footer-text">
+    REBROKER · Investivo GmbH · Leipzig · Alle Angaben ohne Gewähr · Vertraulich
+  </footer>
+
+</div>
+
+<script>
+  // ─── CONFIG ───────────────────────────────────────────────────────────────
+  // Replace these with your actual n8n webhook URLs once built
+  const WEBHOOK_GET  = 'https://rebroker.app.n8n.cloud/webhook/dr';        // n8n GET endpoint
+  const WEBHOOK_POST = 'https://rebroker.app.n8n.cloud/webhook/dr/bestaetigen'; // n8n POST endpoint
+
+  // ─── PARSE URL PARAMS ─────────────────────────────────────────────────────
+  const params    = new URLSearchParams(window.location.search);
+  const dealId    = params.get('deal')    || '';
+  const contactId = params.get('contact') || '';
+
+  // ─── BRAND CONFIG ─────────────────────────────────────────────────────────
+  const BRANDS = {
+    rebroker: {
+      bodyClass:   'brand-rebroker',
+      logoName:    'REBROKER',
+      logoSub:     'Investivo GmbH · Leipzig',
+      footer:      'REBROKER · Investivo GmbH · Leipzig · Alle Angaben ohne Gewähr · Vertraulich',
+      cb1Text:     'Ich bestätige, dieses Objekt erstmalig durch REBROKER (Investivo GmbH) nachgewiesen bekommen zu haben.',
+      cb2Title:    'Provisionspflicht bestätigt',
+      cb2Text:     'Ich bestätige, dass diese Transaktion provisionspflichtig ist und nehme die Maklerprovision zur Kenntnis.',
+      showCommBox: false,
+    },
+    von_poll: {
+      bodyClass:   'brand-vonpoll',
+      logoName:    'VON POLL COMMERCIAL',
+      logoSub:     'Leipzig',
+      footer:      'VON POLL COMMERCIAL Leipzig · Alle Angaben ohne Gewähr · Vertraulich',
+      cb1Text:     'Ich bestätige, dieses Objekt erstmalig durch VON POLL COMMERCIAL Leipzig nachgewiesen bekommen zu haben.',
+      cb2Title:    'Provision bestätigt',
+      cb2Text:     'Ich bestätige die Käuferprovision und nehme diese zur Kenntnis.',
+      showCommBox: true,
+    }
+  };
+
+  // ─── INIT ─────────────────────────────────────────────────────────────────
+  document.getElementById('header-date').textContent = new Date().toLocaleDateString('de-DE', {
+    day: '2-digit', month: '2-digit', year: 'numeric'
+  });
+
+  async function init() {
+    if (!dealId || !contactId) {
+      showError('Ungültiger Link. Bitte fordern Sie einen neuen Zugangslink an.');
+      return;
+    }
+
+    try {
+      // Call n8n GET webhook to load deal + contact info
+      const res = await fetch(`${WEBHOOK_GET}?deal=${dealId}&contact=${contactId}`);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+
+      applyBrand(data.vermarkter || 'rebroker');
+      populateDeal(data);
+
+      // If already confirmed → redirect immediately
+      if (data.nachweis_bestaetigt) {
+        showState('already');
+        setTimeout(() => { window.location.href = data.datenraum_url; }, 2000);
+      }
+
+    } catch (e) {
+      // ── DEMO FALLBACK (remove when n8n is live) ──
+      // Shows the page with sample data so you can test the UI
+      console.warn('Using demo fallback:', e.message);
+      applyBrand('rebroker'); // change to 'von_poll' to test that variant
+      populateDeal({
+        deal_name:    'Paul-Gruner-Str. 57',
+        deal_address: '04107 Leipzig',
+        kaufpreis:    '1.650.000 €',
+        we_anzahl:    '12 WE',
+        deal_id:      dealId || 'DEMO-001',
+        contact_firstname: 'Max',
+        contact_lastname:  'Mustermann',
+        contact_email:     'max@beispiel.de',
+        nachweis_bestaetigt: false,
+      });
+    }
+  }
+
+  function applyBrand(brand) {
+    const b = BRANDS[brand] || BRANDS.rebroker;
+    document.getElementById('page-body').className = b.bodyClass;
+    document.getElementById('logo-name').textContent  = b.logoName;
+    document.getElementById('logo-sub').textContent   = b.logoSub;
+    document.getElementById('footer-text').textContent = b.footer;
+    document.getElementById('cb1-text').textContent   = b.cb1Text;
+    document.getElementById('cb2-title').textContent  = b.cb2Title;
+    document.getElementById('cb2-text').textContent   = b.cb2Text;
+    document.getElementById('commission-box').style.display = b.showCommBox ? 'block' : 'none';
+    window._brand = brand;
+  }
+
+  function populateDeal(data) {
+    document.getElementById('deal-name').textContent    = data.deal_name    || 'Objekt';
+    document.getElementById('deal-address').textContent = data.deal_address || '';
+    document.getElementById('meta-dealid').textContent  = data.deal_id      || dealId;
+
+    if (data.kaufpreis) document.getElementById('meta-price').textContent = data.kaufpreis;
+    if (data.we_anzahl) document.getElementById('meta-units').textContent = data.we_anzahl;
+    document.getElementById('meta-row').style.display = 'flex';
+
+    const name = [data.contact_firstname, data.contact_lastname].filter(Boolean).join(' ');
+    document.getElementById('greeting-line').textContent =
+      name ? `Guten Tag, ${name},` : 'Guten Tag,';
+  }
+
+  // ─── BUTTON STATE ─────────────────────────────────────────────────────────
+  function updateButton() {
+    const cb1 = document.getElementById('cb1').checked;
+    const cb2 = document.getElementById('cb2').checked;
+    document.getElementById('submit-btn').disabled = !(cb1 && cb2);
+  }
+
+  // ─── SUBMIT ───────────────────────────────────────────────────────────────
+  async function handleSubmit() {
+    showState('loading');
+
+    try {
+      const res = await fetch(WEBHOOK_POST, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          deal_id:    dealId,
+          contact_id: contactId,
+          brand:      window._brand || 'rebroker',
+          timestamp:  new Date().toISOString(),
+          user_agent: navigator.userAgent,
+        })
+      });
+
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+
+      showState('success');
+      setTimeout(() => {
+        if (data.datenraum_url) {
+          window.location.href = data.datenraum_url;
+        } else {
+          showError('Datenraum-Link nicht verfügbar. Bitte wenden Sie sich an uns.');
+        }
+      }, 1800);
+
+    } catch (e) {
+      showError('Die Bestätigung konnte nicht verarbeitet werden. Bitte versuchen Sie es erneut.');
+    }
+  }
+
+  // ─── UI HELPERS ───────────────────────────────────────────────────────────
+  function showState(state) {
+    document.getElementById('form-area').style.display    = state === 'form'    ? '' : 'none';
+    document.getElementById('state-loading').style.display = state === 'loading' ? 'block' : 'none';
+    document.getElementById('state-success').style.display = state === 'success' ? 'block' : 'none';
+    document.getElementById('state-already').style.display = state === 'already' ? 'block' : 'none';
+    document.getElementById('state-error').style.display   = state === 'error'   ? 'block' : 'none';
+    if (state === 'form') updateButton();
+  }
+
+  function showError(msg) {
+    document.getElementById('error-msg').textContent = msg || '';
+    showState('error');
+    // Also update deal name if not loaded yet
+    if (document.getElementById('deal-name').textContent === 'Wird geladen…') {
+      document.getElementById('deal-name').textContent = 'Datenraum-Zugang';
+    }
+  }
+
+  function resetForm() {
+    document.getElementById('cb1').checked = false;
+    document.getElementById('cb2').checked = false;
+    showState('form');
+  }
+
+  // ─── START ────────────────────────────────────────────────────────────────
+  showState('form');
+  init();
+</script>
+</body>
+</html>
