@@ -15,7 +15,6 @@
       --rb-mid:     #3a3a3a;
       --rb-border:  #d4d0c8;
       --rb-light:   #eeece7;
-
       --vp-navy:    #1a2744;
       --vp-gold:    #b8963e;
       --vp-white:   #f8f7f4;
@@ -32,7 +31,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ─── LAYOUT ─── */
     .page {
       min-height: 100vh;
       display: grid;
@@ -56,7 +54,7 @@
 
     .card {
       width: 100%;
-      max-width: 620px;
+      max-width: 660px;
       border: 1px solid var(--border);
       border-radius: 4px;
       overflow: hidden;
@@ -72,11 +70,6 @@
       background: var(--bg);
     }
 
-    .card-foot {
-      padding: 24px 40px;
-      border-top: 1px solid var(--border);
-    }
-
     footer {
       padding: 20px 40px;
       border-top: 1px solid var(--border);
@@ -85,7 +78,6 @@
       text-align: center;
     }
 
-    /* ─── PROPERTY META ─── */
     .eyebrow {
       font-size: 11px;
       font-weight: 600;
@@ -134,23 +126,34 @@
       font-weight: 500;
     }
 
-    /* ─── SECTION TITLES ─── */
     .section-title {
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.09em;
       text-transform: uppercase;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
       padding-bottom: 10px;
       border-bottom: 1px solid var(--border);
       opacity: 0.5;
     }
 
-    /* ─── CHECKBOXES ─── */
+    /* Introduction paragraph */
+    .intro-box {
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--text);
+      opacity: 0.8;
+      margin-bottom: 24px;
+      padding: 14px 16px;
+      background: var(--light);
+      border-left: 3px solid var(--accent);
+      border-radius: 2px;
+    }
+
     .check-list {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 18px;
       margin-bottom: 32px;
     }
 
@@ -169,7 +172,7 @@
       height: 18px;
       border: 1.5px solid var(--accent);
       border-radius: 2px;
-      margin-top: 2px;
+      margin-top: 3px;
       cursor: pointer;
       position: relative;
       flex-shrink: 0;
@@ -194,16 +197,19 @@
     }
 
     .check-text {
-      font-size: 13.5px;
-      line-height: 1.55;
+      font-size: 13px;
+      line-height: 1.6;
       color: var(--text);
     }
 
     .check-text strong {
       display: block;
       font-weight: 600;
-      margin-bottom: 3px;
-      font-size: 13px;
+      margin-bottom: 4px;
+      font-size: 12.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      opacity: 0.7;
     }
 
     .commission-box {
@@ -211,11 +217,10 @@
       padding: 10px 14px;
       background: var(--light);
       border-left: 3px solid var(--accent);
-      font-size: 13px;
-      line-height: 1.5;
+      font-size: 12.5px;
+      line-height: 1.6;
     }
 
-    /* ─── BUTTON ─── */
     .btn-primary {
       display: flex;
       align-items: center;
@@ -238,33 +243,28 @@
       cursor: not-allowed;
     }
 
-    .btn-primary:not(:disabled):hover {
-      opacity: 0.88;
+    .btn-primary:not(:disabled):hover { opacity: 0.88; }
+    .btn-primary:not(:disabled):active { transform: scale(0.99); }
+
+    .btn-arrow { font-size: 16px; transition: transform 0.2s; }
+    .btn-primary:not(:disabled):hover .btn-arrow { transform: translateX(4px); }
+
+    .btn-note {
+      font-size: 11px;
+      opacity: 0.4;
+      text-align: center;
+      margin-top: 12px;
+      line-height: 1.5;
     }
 
-    .btn-primary:not(:disabled):active {
-      transform: scale(0.99);
-    }
-
-    .btn-arrow {
-      font-size: 16px;
-      transition: transform 0.2s;
-    }
-
-    .btn-primary:not(:disabled):hover .btn-arrow {
-      transform: translateX(4px);
-    }
-
-    /* ─── GREETING ─── */
     .greeting {
       font-size: 13px;
       opacity: 0.6;
-      margin-bottom: 24px;
-      padding-bottom: 20px;
+      margin-bottom: 20px;
+      padding-bottom: 18px;
       border-bottom: 1px solid var(--border);
     }
 
-    /* ─── STATUS STATES ─── */
     .state-loading, .state-success, .state-error, .state-already {
       display: none;
       text-align: center;
@@ -288,33 +288,20 @@
       margin-bottom: 12px;
     }
 
-    .state-title {
-      font-weight: 600;
-      font-size: 15px;
-      margin-bottom: 6px;
-    }
+    .state-title { font-weight: 600; font-size: 15px; margin-bottom: 6px; }
+    .state-sub { font-size: 13px; opacity: 0.6; }
 
-    .state-sub {
-      font-size: 13px;
-      opacity: 0.6;
-    }
-
-    /* ─── BRAND: REBROKER ─── */
+    /* REBROKER */
     body.brand-rebroker {
       --bg: var(--rb-white);
       --text: var(--rb-black);
       --accent: var(--rb-accent);
       --border: var(--rb-border);
       --light: var(--rb-light);
-      --mid: var(--rb-mid);
       background: var(--rb-white);
       color: var(--rb-black);
     }
-
-    body.brand-rebroker header {
-      background: var(--rb-black);
-    }
-
+    body.brand-rebroker header { background: var(--rb-black); }
     body.brand-rebroker .logo-text {
       font-family: 'Inter', sans-serif;
       font-size: 16px;
@@ -323,7 +310,6 @@
       text-transform: uppercase;
       color: var(--rb-white);
     }
-
     body.brand-rebroker .logo-sub {
       font-size: 10px;
       letter-spacing: 0.18em;
@@ -331,47 +317,22 @@
       color: var(--rb-accent);
       margin-top: 2px;
     }
+    body.brand-rebroker .header-right { font-size: 11px; color: rgba(255,255,255,0.4); text-align: right; }
+    body.brand-rebroker .card { background: #fff; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+    body.brand-rebroker .btn-primary { background: var(--rb-black); color: #fff; }
+    body.brand-rebroker footer { color: var(--rb-black); }
 
-    body.brand-rebroker .header-right {
-      font-size: 11px;
-      color: rgba(255,255,255,0.4);
-      text-align: right;
-    }
-
-    body.brand-rebroker .card {
-      background: #fff;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
-    }
-
-    body.brand-rebroker .card-head {
-      background: #fff;
-    }
-
-    body.brand-rebroker .btn-primary {
-      background: var(--rb-black);
-      color: #fff;
-    }
-
-    body.brand-rebroker footer {
-      color: var(--rb-black);
-    }
-
-    /* ─── BRAND: VON POLL ─── */
+    /* VON POLL */
     body.brand-vonpoll {
       --bg: var(--vp-white);
       --text: var(--vp-navy);
       --accent: var(--vp-gold);
       --border: var(--vp-border);
       --light: var(--vp-light);
-      --mid: var(--vp-mid);
       background: var(--vp-white);
       color: var(--vp-navy);
     }
-
-    body.brand-vonpoll header {
-      background: var(--vp-navy);
-    }
-
+    body.brand-vonpoll header { background: var(--vp-navy); }
     body.brand-vonpoll .logo-text {
       font-family: 'Playfair Display', serif;
       font-size: 15px;
@@ -379,7 +340,6 @@
       letter-spacing: 0.06em;
       color: var(--vp-white);
     }
-
     body.brand-vonpoll .logo-sub {
       font-size: 9.5px;
       letter-spacing: 0.2em;
@@ -387,35 +347,14 @@
       color: var(--vp-gold);
       margin-top: 3px;
     }
+    body.brand-vonpoll .header-right { font-size: 11px; color: rgba(255,255,255,0.4); text-align: right; }
+    body.brand-vonpoll .card { background: #fff; box-shadow: 0 2px 20px rgba(26,39,68,0.08); }
+    body.brand-vonpoll .btn-primary { background: var(--vp-navy); color: #fff; }
+    body.brand-vonpoll footer { color: var(--vp-navy); }
 
-    body.brand-vonpoll .header-right {
-      font-size: 11px;
-      color: rgba(255,255,255,0.4);
-      text-align: right;
-    }
-
-    body.brand-vonpoll .card {
-      background: #fff;
-      box-shadow: 0 2px 20px rgba(26,39,68,0.08);
-    }
-
-    body.brand-vonpoll .card-head {
-      background: #fff;
-    }
-
-    body.brand-vonpoll .btn-primary {
-      background: var(--vp-navy);
-      color: #fff;
-    }
-
-    body.brand-vonpoll footer {
-      color: var(--vp-navy);
-    }
-
-    /* ─── RESPONSIVE ─── */
     @media (max-width: 540px) {
       header { padding: 20px 20px; }
-      .card-head, .card-body, .card-foot { padding-left: 24px; padding-right: 24px; }
+      .card-head, .card-body { padding-left: 24px; padding-right: 24px; }
       .meta-row { gap: 16px; }
       footer { padding: 16px 20px; }
     }
@@ -429,7 +368,6 @@
 
 <div class="page">
 
-  <!-- HEADER -->
   <header>
     <div>
       <div class="logo-text" id="logo-name">REBROKER</div>
@@ -441,7 +379,6 @@
     </div>
   </header>
 
-  <!-- MAIN -->
   <main>
     <div class="card">
 
@@ -456,83 +393,105 @@
             <span class="meta-value" id="meta-price">—</span>
           </div>
           <div class="meta-item">
-            <span class="meta-label">Wohneinheiten</span>
-            <span class="meta-value" id="meta-units">—</span>
-          </div>
-          <div class="meta-item">
             <span class="meta-label">Deal-ID</span>
             <span class="meta-value" id="meta-dealid">—</span>
           </div>
         </div>
       </div>
 
-      <!-- CONFIRMATION FORM -->
+      <!-- FORM -->
       <div class="card-body">
 
         <div class="greeting" id="greeting-line">Guten Tag,</div>
 
-        <!-- Main form (shown by default) -->
         <div id="form-area">
+
+          <!-- Introduction -->
+          <p class="intro-box" id="intro-text">
+            Dieses Objekt wird exklusiv über REBROKER (Investivo GmbH) nachgewiesen und vermittelt.
+            Da Sie das Objekt erstmalig durch uns nachgewiesen bekommen, ist vor Freigabe des vertraulichen
+            Datenraums die nachstehende Bestätigung erforderlich.
+          </p>
+
           <div class="section-title">Pflichtbestätigung vor Datenraum-Zugang</div>
 
           <div class="check-list">
 
-            <!-- Checkbox 1: Erstnachweis -->
+            <!-- CB 1: Erstnachweis -->
             <label class="check-item">
               <input type="checkbox" id="cb1" onchange="updateButton()" />
               <div class="check-text">
-                <strong id="cb1-title">Erstnachweis bestätigt</strong>
-                <span id="cb1-text">Ich bestätige, dieses Objekt erstmalig durch REBROKER (Investivo GmbH) nachgewiesen bekommen zu haben.</span>
+                <strong>Erstnachweis bestätigt</strong>
+                <span id="cb1-text">Ich bestätige, dieses Objekt erstmalig durch REBROKER (Investivo GmbH) nachgewiesen bekommen zu haben. Eine anderweitige Vorkenntnis des Objekts besteht nicht.</span>
               </div>
             </label>
 
-            <!-- Checkbox 2: Provision -->
+            <!-- CB 2: Provision -->
             <label class="check-item">
               <input type="checkbox" id="cb2" onchange="updateButton()" />
               <div class="check-text">
                 <strong id="cb2-title">Provisionspflicht bestätigt</strong>
                 <span id="cb2-text">Ich bestätige, dass diese Transaktion provisionspflichtig ist und nehme die Maklerprovision zur Kenntnis.</span>
                 <div class="commission-box" id="commission-box" style="display:none">
-                  Käuferprovision: <strong>6 % netto zzgl. MwSt. = 7,14 % inkl. MwSt.</strong><br>
-                  Fällig bei Abschluss des notariellen Kaufvertrags.
+                  Käuferprovision: <strong>6 % netto zzgl. MwSt. = 7,14 % inkl. MwSt.</strong>, berechnet vom notariellen Kaufpreis.
+                  Fällig und verdient bei Abschluss des notariellen Kaufvertrags.<br><br>
+                  Die Provision fällt auch an, wenn der Erwerb durch eine mir nahestehende Person oder Gesellschaft
+                  oder über ein wirtschaftlich gleichwertiges Geschäft (z. B. Anteilskauf/Share Deal) erfolgt.
                 </div>
+              </div>
+            </label>
+
+            <!-- CB 3: Unternehmer -->
+            <label class="check-item">
+              <input type="checkbox" id="cb3" onchange="updateButton()" />
+              <div class="check-text">
+                <strong>Handeln als Unternehmer bestätigt</strong>
+                <span>Ich bestätige, das Geschäft in Ausübung meiner gewerblichen/selbstständigen Tätigkeit (als Unternehmer i. S. d. § 14 BGB) abzuschließen.</span>
+              </div>
+            </label>
+
+            <!-- CB 4: Vertraulichkeit -->
+            <label class="check-item">
+              <input type="checkbox" id="cb4" onchange="updateButton()" />
+              <div class="check-text">
+                <strong>Vertraulichkeit</strong>
+                <span>Die im Datenraum bereitgestellten Unterlagen sind vertraulich und werden ausschließlich zur Prüfung dieses Erwerbs verwendet; eine Weitergabe an Dritte erfolgt nicht.</span>
               </div>
             </label>
 
           </div>
 
-          <div class="card-foot" style="padding: 0; border: none;">
-            <button class="btn-primary" id="submit-btn" disabled onclick="handleSubmit()">
-              Zum Datenraum <span class="btn-arrow">→</span>
-            </button>
-            <p style="font-size:11px; opacity:0.4; text-align:center; margin-top:12px; line-height:1.5;">
-              Mit dem Klick auf „Zum Datenraum" wird Ihre Bestätigung mit Zeitstempel protokolliert und als PDF archiviert.
-            </p>
-          </div>
+          <button class="btn-primary" id="submit-btn" disabled onclick="handleSubmit()">
+            Zum Datenraum <span class="btn-arrow">→</span>
+          </button>
+          <p class="btn-note">
+            Mit dem Klick auf „Zum Datenraum" wird Ihre Bestätigung mit Zeitstempel protokolliert und als PDF archiviert.
+          </p>
+
         </div>
 
-        <!-- Loading state -->
+        <!-- Loading -->
         <div class="state-loading" id="state-loading">
           <div class="spinner"></div>
           <div class="state-title">Bestätigung wird verarbeitet…</div>
           <div class="state-sub">Bitte warten Sie einen Moment.</div>
         </div>
 
-        <!-- Success state -->
+        <!-- Success -->
         <div class="state-success" id="state-success">
           <div class="icon">✅</div>
           <div class="state-title">Bestätigung erhalten</div>
           <div class="state-sub">Sie werden jetzt in den Datenraum weitergeleitet…</div>
         </div>
 
-        <!-- Already confirmed state -->
+        <!-- Already confirmed -->
         <div class="state-already" id="state-already">
           <div class="icon">🔓</div>
           <div class="state-title">Zugang bereits bestätigt</div>
           <div class="state-sub">Sie werden direkt in den Datenraum weitergeleitet…</div>
         </div>
 
-        <!-- Error state -->
+        <!-- Error -->
         <div class="state-error" id="state-error">
           <div class="icon">⚠️</div>
           <div class="state-title">Fehler aufgetreten</div>
@@ -551,41 +510,38 @@
 </div>
 
 <script>
-  // ─── CONFIG ───────────────────────────────────────────────────────────────
-  // Replace these with your actual n8n webhook URLs once built
-  const WEBHOOK_GET  = 'https://rebroker.app.n8n.cloud/webhook/dr';        // n8n GET endpoint
-  const WEBHOOK_POST = 'https://rebroker.app.n8n.cloud/webhook/dr/bestaetigen'; // n8n POST endpoint
+  const WEBHOOK_GET  = 'https://rebroker.app.n8n.cloud/webhook/dr';
+  const WEBHOOK_POST = 'https://rebroker.app.n8n.cloud/webhook/dr/bestaetigen';
 
-  // ─── PARSE URL PARAMS ─────────────────────────────────────────────────────
   const params    = new URLSearchParams(window.location.search);
   const dealId    = params.get('deal')    || '';
   const contactId = params.get('contact') || '';
 
-  // ─── BRAND CONFIG ─────────────────────────────────────────────────────────
   const BRANDS = {
     rebroker: {
-      bodyClass:   'brand-rebroker',
-      logoName:    'REBROKER',
-      logoSub:     'Investivo GmbH · Leipzig',
-      footer:      'REBROKER · Investivo GmbH · Leipzig · Alle Angaben ohne Gewähr · Vertraulich',
-      cb1Text:     'Ich bestätige, dieses Objekt erstmalig durch REBROKER (Investivo GmbH) nachgewiesen bekommen zu haben.',
-      cb2Title:    'Provisionspflicht bestätigt',
-      cb2Text:     'Ich bestätige, dass diese Transaktion provisionspflichtig ist und nehme die Maklerprovision zur Kenntnis.',
+      bodyClass:  'brand-rebroker',
+      logoName:   'REBROKER',
+      logoSub:    'Investivo GmbH · Leipzig',
+      footer:     'REBROKER · Investivo GmbH · Leipzig · Alle Angaben ohne Gewähr · Vertraulich',
+      intro:      'Dieses Objekt wird exklusiv über REBROKER (Investivo GmbH) nachgewiesen und vermittelt. Da Sie das Objekt erstmalig durch uns nachgewiesen bekommen, ist vor Freigabe des vertraulichen Datenraums die nachstehende Bestätigung erforderlich.',
+      cb1Text:    'Ich bestätige, dieses Objekt erstmalig durch REBROKER (Investivo GmbH) nachgewiesen bekommen zu haben. Eine anderweitige Vorkenntnis des Objekts besteht nicht.',
+      cb2Title:   'Provisionspflicht bestätigt',
+      cb2Text:    'Ich bestätige, dass diese Transaktion provisionspflichtig ist und nehme die Maklerprovision zur Kenntnis.',
       showCommBox: false,
     },
     von_poll: {
-      bodyClass:   'brand-vonpoll',
-      logoName:    'VON POLL COMMERCIAL',
-      logoSub:     'Leipzig',
-      footer:      'VON POLL COMMERCIAL Leipzig · Alle Angaben ohne Gewähr · Vertraulich',
-      cb1Text:     'Ich bestätige, dieses Objekt erstmalig durch VON POLL COMMERCIAL Leipzig nachgewiesen bekommen zu haben.',
-      cb2Title:    'Provision bestätigt',
-      cb2Text:     'Ich bestätige die Käuferprovision und nehme diese zur Kenntnis.',
+      bodyClass:  'brand-vonpoll',
+      logoName:   'VON POLL COMMERCIAL',
+      logoSub:    'Leipzig',
+      footer:     'VON POLL COMMERCIAL Leipzig · Alle Angaben ohne Gewähr · Vertraulich',
+      intro:      'Dieses Objekt wird exklusiv über VON POLL COMMERCIAL Leipzig nachgewiesen und vermittelt. Da Sie das Objekt erstmalig durch uns nachgewiesen bekommen, ist vor Freigabe des vertraulichen Datenraums die nachstehende Bestätigung erforderlich. Mit Ihrer Bestätigung dokumentieren Sie den Erstnachweis durch VON POLL COMMERCIAL Leipzig und erkennen die Käuferprovision an.',
+      cb1Text:    'Ich bestätige, das Objekt erstmalig durch VON POLL COMMERCIAL Leipzig nachgewiesen bekommen zu haben. Eine anderweitige Vorkenntnis des Objekts besteht nicht.',
+      cb2Title:   'Provision bestätigt',
+      cb2Text:    'Ich bestätige die Käuferprovision und nehme diese zur Kenntnis.',
       showCommBox: true,
     }
   };
 
-  // ─── INIT ─────────────────────────────────────────────────────────────────
   document.getElementById('header-date').textContent = new Date().toLocaleDateString('de-DE', {
     day: '2-digit', month: '2-digit', year: 'numeric'
   });
@@ -595,36 +551,27 @@
       showError('Ungültiger Link. Bitte fordern Sie einen neuen Zugangslink an.');
       return;
     }
-
     try {
-      // Call n8n GET webhook to load deal + contact info
       const res = await fetch(`${WEBHOOK_GET}?deal=${dealId}&contact=${contactId}`);
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
-
       applyBrand(data.vermarkter || 'rebroker');
       populateDeal(data);
-
-      // If already confirmed → redirect immediately
       if (data.nachweis_bestaetigt) {
         showState('already');
         setTimeout(() => { window.location.href = data.datenraum_url; }, 2000);
       }
-
     } catch (e) {
-      // ── DEMO FALLBACK (remove when n8n is live) ──
-      // Shows the page with sample data so you can test the UI
-      console.warn('Using demo fallback:', e.message);
-      applyBrand('rebroker'); // change to 'von_poll' to test that variant
+      console.warn('Demo fallback:', e.message);
+      applyBrand('von_poll');
       populateDeal({
-        deal_name:    'Paul-Gruner-Str. 57',
+        deal_name: 'WGH Leipzig - Eisenbahnstraße 6',
         deal_address: '04107 Leipzig',
-        kaufpreis:    '1.650.000 €',
-        we_anzahl:    '12 WE',
-        deal_id:      dealId || 'DEMO-001',
+        kaufpreis: '1.600.000 €',
+        deal_id: dealId || 'DEMO-001',
         contact_firstname: 'Max',
-        contact_lastname:  'Mustermann',
-        contact_email:     'max@beispiel.de',
+        contact_lastname: 'Mustermann',
+        contact_email: 'max@beispiel.de',
         nachweis_bestaetigt: false,
       });
     }
@@ -632,10 +579,11 @@
 
   function applyBrand(brand) {
     const b = BRANDS[brand] || BRANDS.rebroker;
-    document.getElementById('page-body').className = b.bodyClass;
+    document.getElementById('page-body').className    = b.bodyClass;
     document.getElementById('logo-name').textContent  = b.logoName;
     document.getElementById('logo-sub').textContent   = b.logoSub;
     document.getElementById('footer-text').textContent = b.footer;
+    document.getElementById('intro-text').textContent = b.intro;
     document.getElementById('cb1-text').textContent   = b.cb1Text;
     document.getElementById('cb2-title').textContent  = b.cb2Title;
     document.getElementById('cb2-text').textContent   = b.cb2Text;
@@ -647,27 +595,19 @@
     document.getElementById('deal-name').textContent    = data.deal_name    || 'Objekt';
     document.getElementById('deal-address').textContent = data.deal_address || '';
     document.getElementById('meta-dealid').textContent  = data.deal_id      || dealId;
-
     if (data.kaufpreis) document.getElementById('meta-price').textContent = data.kaufpreis;
-    if (data.we_anzahl) document.getElementById('meta-units').textContent = data.we_anzahl;
     document.getElementById('meta-row').style.display = 'flex';
-
     const name = [data.contact_firstname, data.contact_lastname].filter(Boolean).join(' ');
-    document.getElementById('greeting-line').textContent =
-      name ? `Guten Tag, ${name},` : 'Guten Tag,';
+    document.getElementById('greeting-line').textContent = name ? `Guten Tag, ${name},` : 'Guten Tag,';
   }
 
-  // ─── BUTTON STATE ─────────────────────────────────────────────────────────
   function updateButton() {
-    const cb1 = document.getElementById('cb1').checked;
-    const cb2 = document.getElementById('cb2').checked;
-    document.getElementById('submit-btn').disabled = !(cb1 && cb2);
+    const allChecked = ['cb1','cb2','cb3','cb4'].every(id => document.getElementById(id).checked);
+    document.getElementById('submit-btn').disabled = !allChecked;
   }
 
-  // ─── SUBMIT ───────────────────────────────────────────────────────────────
   async function handleSubmit() {
     showState('loading');
-
     try {
       const res = await fetch(WEBHOOK_POST, {
         method: 'POST',
@@ -680,10 +620,8 @@
           user_agent: navigator.userAgent,
         })
       });
-
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
-
       showState('success');
       setTimeout(() => {
         if (data.datenraum_url) {
@@ -692,38 +630,33 @@
           showError('Datenraum-Link nicht verfügbar. Bitte wenden Sie sich an uns.');
         }
       }, 1800);
-
     } catch (e) {
       showError('Die Bestätigung konnte nicht verarbeitet werden. Bitte versuchen Sie es erneut.');
     }
   }
 
-  // ─── UI HELPERS ───────────────────────────────────────────────────────────
   function showState(state) {
-    document.getElementById('form-area').style.display    = state === 'form'    ? '' : 'none';
-    document.getElementById('state-loading').style.display = state === 'loading' ? 'block' : 'none';
-    document.getElementById('state-success').style.display = state === 'success' ? 'block' : 'none';
-    document.getElementById('state-already').style.display = state === 'already' ? 'block' : 'none';
-    document.getElementById('state-error').style.display   = state === 'error'   ? 'block' : 'none';
+    document.getElementById('form-area').style.display      = state === 'form'    ? '' : 'none';
+    document.getElementById('state-loading').style.display  = state === 'loading' ? 'block' : 'none';
+    document.getElementById('state-success').style.display  = state === 'success' ? 'block' : 'none';
+    document.getElementById('state-already').style.display  = state === 'already' ? 'block' : 'none';
+    document.getElementById('state-error').style.display    = state === 'error'   ? 'block' : 'none';
     if (state === 'form') updateButton();
   }
 
   function showError(msg) {
     document.getElementById('error-msg').textContent = msg || '';
     showState('error');
-    // Also update deal name if not loaded yet
     if (document.getElementById('deal-name').textContent === 'Wird geladen…') {
       document.getElementById('deal-name').textContent = 'Datenraum-Zugang';
     }
   }
 
   function resetForm() {
-    document.getElementById('cb1').checked = false;
-    document.getElementById('cb2').checked = false;
+    ['cb1','cb2','cb3','cb4'].forEach(id => document.getElementById(id).checked = false);
     showState('form');
   }
 
-  // ─── START ────────────────────────────────────────────────────────────────
   showState('form');
   init();
 </script>
