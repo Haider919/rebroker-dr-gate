@@ -137,7 +137,6 @@
       opacity: 0.5;
     }
 
-    /* Introduction paragraph */
     .intro-box {
       font-size: 13px;
       line-height: 1.65;
@@ -268,7 +267,7 @@
     .state-loading, .state-success, .state-error, .state-already {
       display: none;
       text-align: center;
-      padding: 20px 0;
+      padding: 32px 0;
     }
 
     .state-loading .spinner {
@@ -288,8 +287,18 @@
       margin-bottom: 12px;
     }
 
-    .state-title { font-weight: 600; font-size: 15px; margin-bottom: 6px; }
-    .state-sub { font-size: 13px; opacity: 0.6; }
+    .state-title { font-weight: 600; font-size: 15px; margin-bottom: 8px; }
+    .state-sub { font-size: 13px; opacity: 0.7; line-height: 1.7; }
+
+    .error-email {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      opacity: 1;
+      color: var(--accent);
+      text-decoration: none;
+    }
 
     /* REBROKER */
     body.brand-rebroker {
@@ -382,7 +391,6 @@
   <main>
     <div class="card">
 
-      <!-- PROPERTY INFO -->
       <div class="card-head">
         <div class="eyebrow">Objekt</div>
         <div class="deal-name" id="deal-name">Wird geladen…</div>
@@ -399,14 +407,12 @@
         </div>
       </div>
 
-      <!-- FORM -->
       <div class="card-body">
 
         <div class="greeting" id="greeting-line">Guten Tag,</div>
 
         <div id="form-area">
 
-          <!-- Introduction -->
           <p class="intro-box" id="intro-text">
             Dieses Objekt wird exklusiv über REBROKER nachgewiesen und vermittelt.
             Da Sie das Objekt erstmalig durch uns nachgewiesen bekommen, ist vor Freigabe des vertraulichen
@@ -417,7 +423,6 @@
 
           <div class="check-list">
 
-            <!-- CB 1: Erstnachweis -->
             <label class="check-item">
               <input type="checkbox" id="cb1" onchange="updateButton()" />
               <div class="check-text">
@@ -426,7 +431,6 @@
               </div>
             </label>
 
-            <!-- CB 2: Provision -->
             <label class="check-item">
               <input type="checkbox" id="cb2" onchange="updateButton()" />
               <div class="check-text">
@@ -441,7 +445,6 @@
               </div>
             </label>
 
-            <!-- CB 3: Unternehmer -->
             <label class="check-item">
               <input type="checkbox" id="cb3" onchange="updateButton()" />
               <div class="check-text">
@@ -450,7 +453,6 @@
               </div>
             </label>
 
-            <!-- CB 4: Vertraulichkeit -->
             <label class="check-item">
               <input type="checkbox" id="cb4" onchange="updateButton()" />
               <div class="check-text">
@@ -494,9 +496,11 @@
         <!-- Error -->
         <div class="state-error" id="state-error">
           <div class="icon">⚠️</div>
-          <div class="state-title">Fehler aufgetreten</div>
-          <div class="state-sub" id="error-msg">Bitte versuchen Sie es erneut oder wenden Sie sich an uns.</div>
-          <button class="btn-primary" style="margin-top:20px; max-width:200px; margin-left:auto; margin-right:auto;" onclick="resetForm()">Erneut versuchen</button>
+          <div class="state-title">Zugang nicht verfügbar</div>
+          <div class="state-sub">
+            Ihr Datenraum-Link konnte nicht geladen werden.<br>
+            Bitte kontaktieren Sie Ihren Ansprechpartner.
+          </div>
         </div>
 
       </div>
@@ -519,25 +523,27 @@
 
   const BRANDS = {
     rebroker: {
-      bodyClass:  'brand-rebroker',
-      logoName:   'REBROKER',
-      logoSub: 'Leipzig',
-      footer: 'REBROKER · Leipzig · Alle Angaben ohne Gewähr · Vertraulich',
-      intro:      'Dieses Objekt wird exklusiv über REBROKER nachgewiesen und vermittelt. Da Sie das Objekt erstmalig durch uns nachgewiesen bekommen, ist vor Freigabe des vertraulichen Datenraums die nachstehende Bestätigung erforderlich.',
-      cb1Text: 'Ich bestätige, dieses Objekt erstmalig durch REBROKER nachgewiesen bekommen zu haben. Eine anderweitige Vorkenntnis des Objekts besteht nicht.',
-      cb2Title:   'Provisionspflicht bestätigt',
-      cb2Text:    'Ich bestätige, dass diese Transaktion provisionspflichtig ist und nehme die Maklerprovision zur Kenntnis.',
+      bodyClass:   'brand-rebroker',
+      logoName:    'REBROKER',
+      logoSub:     'Leipzig',
+      footer:      'REBROKER · Leipzig · Alle Angaben ohne Gewähr · Vertraulich',
+      intro:       'Dieses Objekt wird exklusiv über REBROKER nachgewiesen und vermittelt. Da Sie das Objekt erstmalig durch uns nachgewiesen bekommen, ist vor Freigabe des vertraulichen Datenraums die nachstehende Bestätigung erforderlich.',
+      cb1Text:     'Ich bestätige, dieses Objekt erstmalig durch REBROKER nachgewiesen bekommen zu haben. Eine anderweitige Vorkenntnis des Objekts besteht nicht.',
+      cb2Title:    'Provisionspflicht bestätigt',
+      cb2Text:     'Ich bestätige, dass diese Transaktion provisionspflichtig ist und nehme die Maklerprovision zur Kenntnis.',
+      errorEmail:  'info@rebrkr.com',
       showCommBox: false,
     },
     von_poll: {
-      bodyClass:  'brand-vonpoll',
-      logoName:   'VON POLL COMMERCIAL',
-      logoSub:    'Leipzig',
-      footer:     'VON POLL COMMERCIAL Leipzig · Alle Angaben ohne Gewähr · Vertraulich',
-      intro:      'Dieses Objekt wird exklusiv über VON POLL COMMERCIAL Leipzig nachgewiesen und vermittelt. Da Sie das Objekt erstmalig durch uns nachgewiesen bekommen, ist vor Freigabe des vertraulichen Datenraums die nachstehende Bestätigung erforderlich. Mit Ihrer Bestätigung dokumentieren Sie den Erstnachweis durch VON POLL COMMERCIAL Leipzig und erkennen die Käuferprovision an.',
-      cb1Text:    'Ich bestätige, das Objekt erstmalig durch VON POLL COMMERCIAL Leipzig nachgewiesen bekommen zu haben. Eine anderweitige Vorkenntnis des Objekts besteht nicht.',
-      cb2Title:   'Provision bestätigt',
-      cb2Text:    'Ich bestätige die Käuferprovision und nehme diese zur Kenntnis.',
+      bodyClass:   'brand-vonpoll',
+      logoName:    'VON POLL COMMERCIAL',
+      logoSub:     'Leipzig',
+      footer:      'VON POLL COMMERCIAL Leipzig · Alle Angaben ohne Gewähr · Vertraulich',
+      intro:       'Dieses Objekt wird exklusiv über VON POLL COMMERCIAL Leipzig nachgewiesen und vermittelt. Da Sie das Objekt erstmalig durch uns nachgewiesen bekommen, ist vor Freigabe des vertraulichen Datenraums die nachstehende Bestätigung erforderlich. Mit Ihrer Bestätigung dokumentieren Sie den Erstnachweis durch VON POLL COMMERCIAL Leipzig und erkennen die Käuferprovision an.',
+      cb1Text:     'Ich bestätige, das Objekt erstmalig durch VON POLL COMMERCIAL Leipzig nachgewiesen bekommen zu haben. Eine anderweitige Vorkenntnis des Objekts besteht nicht.',
+      cb2Title:    'Provision bestätigt',
+      cb2Text:     'Ich bestätige die Käuferprovision und nehme diese zur Kenntnis.',
+      errorEmail:  'info@rebrkr.com',
       showCommBox: true,
     }
   };
@@ -548,7 +554,7 @@
 
   async function init() {
     if (!dealId || !contactId) {
-      showError('Ungültiger Link. Bitte fordern Sie einen neuen Zugangslink an.');
+      showError();
       return;
     }
     try {
@@ -562,32 +568,24 @@
         setTimeout(() => { window.location.href = data.datenraum_url; }, 2000);
       }
     } catch (e) {
-      console.warn('Demo fallback:', e.message);
-      applyBrand('von_poll');
-      populateDeal({
-        deal_name: 'WGH Leipzig - Eisenbahnstraße 6',
-        deal_address: '04107 Leipzig',
-        kaufpreis: '1.600.000 €',
-        deal_id: dealId || 'DEMO-001',
-        contact_firstname: 'Max',
-        contact_lastname: 'Mustermann',
-        contact_email: 'max@beispiel.de',
-        nachweis_bestaetigt: false,
-      });
+      console.warn('Error:', e.message);
+      showError();
     }
   }
 
   function applyBrand(brand) {
     const b = BRANDS[brand] || BRANDS.rebroker;
-    document.getElementById('page-body').className    = b.bodyClass;
-    document.getElementById('logo-name').textContent  = b.logoName;
-    document.getElementById('logo-sub').textContent   = b.logoSub;
+    document.getElementById('page-body').className     = b.bodyClass;
+    document.getElementById('logo-name').textContent   = b.logoName;
+    document.getElementById('logo-sub').textContent    = b.logoSub;
     document.getElementById('footer-text').textContent = b.footer;
-    document.getElementById('intro-text').textContent = b.intro;
-    document.getElementById('cb1-text').textContent   = b.cb1Text;
-    document.getElementById('cb2-title').textContent  = b.cb2Title;
-    document.getElementById('cb2-text').textContent   = b.cb2Text;
+    document.getElementById('intro-text').textContent  = b.intro;
+    document.getElementById('cb1-text').textContent    = b.cb1Text;
+    document.getElementById('cb2-title').textContent   = b.cb2Title;
+    document.getElementById('cb2-text').textContent    = b.cb2Text;
     document.getElementById('commission-box').style.display = b.showCommBox ? 'block' : 'none';
+    const emailEl = document.getElementById('error-email');
+    if (emailEl) { emailEl.textContent = b.errorEmail; emailEl.href = 'mailto:' + b.errorEmail; }
     window._brand = brand;
   }
 
@@ -627,11 +625,11 @@
         if (data.datenraum_url) {
           window.location.href = data.datenraum_url;
         } else {
-          showError('Datenraum-Link nicht verfügbar. Bitte wenden Sie sich an uns.');
+          showError();
         }
       }, 1800);
     } catch (e) {
-      showError('Die Bestätigung konnte nicht verarbeitet werden. Bitte versuchen Sie es erneut.');
+      showError();
     }
   }
 
@@ -644,17 +642,9 @@
     if (state === 'form') updateButton();
   }
 
-  function showError(msg) {
-    document.getElementById('error-msg').textContent = msg || '';
+  function showError() {
+    document.getElementById('deal-name').textContent = 'Datenraum-Zugang';
     showState('error');
-    if (document.getElementById('deal-name').textContent === 'Wird geladen…') {
-      document.getElementById('deal-name').textContent = 'Datenraum-Zugang';
-    }
-  }
-
-  function resetForm() {
-    ['cb1','cb2','cb3','cb4'].forEach(id => document.getElementById(id).checked = false);
-    showState('form');
   }
 
   showState('form');
