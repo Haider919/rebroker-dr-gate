@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DR Link Generator — REBROKER</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0e0e0e;
+      --white: #f7f6f3;
+      --accent: #c8a96e;
+      --border: #d4d0c8;
+      --light: #eeece7;
+      --mid: #6b6760;
+      --success: #2a7a2a;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      background: var(--white);
+      color: var(--black);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header {
+      background: var(--black);
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo { color: white; font-weight: 600; font-size: 15px; letter-spacing: 0.1em; }
+    .logo-sub { color: var(--accent); font-size: 10px; letter-spacing: 0.18em; margin-top: 2px; }
+    .header-badge { color: rgba(255,255,255,0.4); font-size: 11px; }
+
+    main {
+      max-width: 680px;
+      margin: 48px auto;
+      padding: 0 20px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      color: var(--mid);
+      font-size: 13px;
+      margin-bottom: 40px;
+    }
+
+    .step {
+      margin-bottom: 32px;
+    }
+
+    .step-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 8px;
+    }
+
+    .search-wrap {
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 3px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      background: #fff;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .search-input:focus { border-color: var(--accent); }
+    .search-input:disabled { background: var(--light); color: var(--mid); }
+
+    .results {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0; right: 0;
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 3px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      z-index: 10;
+      max-height: 240px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .results.open { display: block; }
+
+    .result-item {
+      padding: 10px 16px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--light);
+      transition: background 0.1s;
+    }
+
+    .result-item:last-child { border-bottom: none; }
+    .result-item:hover { background: var(--light); }
+
+    .result-name { font-weight: 500; font-size: 13.5px; }
+    .result-sub { font-size: 11px; color: var(--mid); margin-top: 2px; }
+
+    .selected-card {
+      display: none;
+      padding: 12px 16px;
+      background: var(--light);
+      border: 1.5px solid var(--accent);
+      border-radius: 3px;
+      position: relative;
+    }
+
+    .selected-card.show { display: block; }
+    .selected-card .name { font-weight: 600; font-size: 13.5px; }
+    .selected-card .sub { font-size: 11px; color: var(--mid); margin-top: 2px; }
+
+    .clear-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--mid);
+      font-size: 16px;
+      padding: 4px;
+      line-height: 1;
+    }
+
+    .clear-btn:hover { color: var(--black); }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 32px 0;
+    }
+
+    .generate-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--black);
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .generate-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .generate-btn:not(:disabled):hover { opacity: 0.85; }
+
+    .result-box {
+      display: none;
+      margin-top: 24px;
+      padding: 20px;
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 3px;
+    }
+
+    .result-box.show { display: block; }
+
+    .result-box .label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 8px;
+    }
+
+    .link-display {
+      font-size: 13px;
+      color: var(--black);
+      word-break: break-all;
+      background: var(--light);
+      padding: 10px 14px;
+      border-radius: 2px;
+      margin-bottom: 12px;
+      font-family: monospace;
+    }
+
+    .copy-btn {
+      padding: 10px 20px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .copy-btn:hover { opacity: 0.85; }
+
+    .success-msg {
+      display: none;
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--success);
+      font-weight: 500;
+    }
+
+    .success-msg.show { display: block; }
+
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading { display: none; text-align: center; padding: 12px; color: var(--mid); font-size: 13px; }
+    .loading.show { display: block; }
+
+    footer {
+      text-align: center;
+      padding: 32px 20px;
+      font-size: 11px;
+      color: var(--mid);
+      border-top: 1px solid var(--border);
+      margin-top: 60px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">REBROKER</div>
+    <div class="logo-sub">Leipzig</div>
+  </div>
+  <div class="header-badge">Internes Tool · DR Link Generator</div>
+</header>
+
+<main>
+  <h1>Datenraum-Link generieren</h1>
+  <p class="subtitle">Objekt und Interessent auswählen — der Link wird automatisch in HubSpot gespeichert.</p>
+
+  <!-- Step 1: Deal -->
+  <div class="step">
+    <div class="step-label">Schritt 1 — Objekt auswählen</div>
+    <div class="search-wrap" id="deal-wrap">
+      <input type="text" class="search-input" id="deal-input" placeholder="Objektname eingeben, z. B. WGH Leipzig…" autocomplete="off" />
+      <div class="results" id="deal-results"></div>
+    </div>
+    <div class="selected-card" id="deal-selected">
+      <div class="name" id="deal-selected-name"></div>
+      <div class="sub" id="deal-selected-sub"></div>
+      <button class="clear-btn" onclick="clearDeal()" title="Auswahl aufheben">×</button>
+    </div>
+  </div>
+
+  <!-- Step 2: Contact -->
+  <div class="step">
+    <div class="step-label">Schritt 2 — Interessent auswählen</div>
+    <div class="search-wrap" id="contact-wrap">
+      <input type="text" class="search-input" id="contact-input" placeholder="Name oder E-Mail des Interessenten…" autocomplete="off" />
+      <div class="results" id="contact-results"></div>
+    </div>
+    <div class="selected-card" id="contact-selected">
+      <div class="name" id="contact-selected-name"></div>
+      <div class="sub" id="contact-selected-sub"></div>
+      <button class="clear-btn" onclick="clearContact()" title="Auswahl aufheben">×</button>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <button class="generate-btn" id="generate-btn" disabled onclick="generateLink()">
+    DR Link generieren
+  </button>
+
+  <!-- Result -->
+  <div class="result-box" id="result-box">
+    <div class="label">Generierter Link — in HubSpot gespeichert ✓</div>
+    <div class="link-display" id="result-link"></div>
+    <button class="copy-btn" onclick="copyLink()">Link kopieren</button>
+    <div class="success-msg" id="copy-msg">✓ Kopiert — direkt in E-Mail einfügen</div>
+  </div>
+
+</main>
+
+<footer>
+  REBROKER · Internes Tool · Nur für internen Gebrauch
+</footer>
+
+<script>
+  const N8N_BASE = 'https://rebroker.app.n8n.cloud/webhook';
+  const SEARCH_DEALS    = N8N_BASE + '/dr-search-deals';
+  const SEARCH_CONTACTS = N8N_BASE + '/dr-search-contacts';
+  const GENERATE        = N8N_BASE + '/dr-link-generate';
+
+  let selectedDeal = null;
+  let selectedContact = null;
+  let dealTimer = null;
+  let contactTimer = null;
+
+  // Deal search
+  document.getElementById('deal-input').addEventListener('input', function() {
+    clearTimeout(dealTimer);
+    const q = this.value.trim();
+    if (q.length < 2) { closeDealResults(); return; }
+    dealTimer = setTimeout(() => searchDeals(q), 400);
+  });
+
+  document.getElementById('deal-input').addEventListener('blur', function() {
+    setTimeout(closeDealResults, 200);
+  });
+
+  // Contact search
+  document.getElementById('contact-input').addEventListener('input', function() {
+    clearTimeout(contactTimer);
+    const q = this.value.trim();
+    if (q.length < 2) { closeContactResults(); return; }
+    contactTimer = setTimeout(() => searchContacts(q), 400);
+  });
+
+  document.getElementById('contact-input').addEventListener('blur', function() {
+    setTimeout(closeContactResults, 200);
+  });
+
+  async function searchDeals(q) {
+    try {
+      const res = await fetch(`${SEARCH_DEALS}?q=${encodeURIComponent(q)}`);
+      const data = await res.json();
+      showDealResults(data.deals || []);
+    } catch(e) {
+      console.error('Deal search error:', e);
+    }
+  }
+
+  async function searchContacts(q) {
+    try {
+      const res = await fetch(`${SEARCH_CONTACTS}?q=${encodeURIComponent(q)}`);
+      const data = await res.json();
+      showContactResults(data.contacts || []);
+    } catch(e) {
+      console.error('Contact search error:', e);
+    }
+  }
+
+  function showDealResults(deals) {
+    const box = document.getElementById('deal-results');
+    if (deals.length === 0) {
+      box.innerHTML = '<div class="result-item"><div class="result-name" style="color:#999">Keine Ergebnisse</div></div>';
+    } else {
+      box.innerHTML = deals.map(d => `
+        <div class="result-item" onclick="selectDeal('${d.id}', '${escHtml(d.name)}', '${d.vermarkter || ''}')">
+          <div class="result-name">${escHtml(d.name)}</div>
+          <div class="result-sub">ID: ${d.id} · ${d.vermarkter || '—'}</div>
+        </div>
+      `).join('');
+    }
+    box.classList.add('open');
+  }
+
+  function showContactResults(contacts) {
+    const box = document.getElementById('contact-results');
+    if (contacts.length === 0) {
+      box.innerHTML = '<div class="result-item"><div class="result-name" style="color:#999">Keine Ergebnisse</div></div>';
+    } else {
+      box.innerHTML = contacts.map(c => `
+        <div class="result-item" onclick="selectContact('${c.id}', '${escHtml(c.name)}', '${escHtml(c.email)}')">
+          <div class="result-name">${escHtml(c.name)}</div>
+          <div class="result-sub">${escHtml(c.email)}</div>
+        </div>
+      `).join('');
+    }
+    box.classList.add('open');
+  }
+
+  function selectDeal(id, name, vermarkter) {
+    selectedDeal = { id, name, vermarkter };
+    document.getElementById('deal-input').style.display = 'none';
+    document.getElementById('deal-selected-name').textContent = name;
+    document.getElementById('deal-selected-sub').textContent = 'ID: ' + id + ' · ' + (vermarkter || '—');
+    document.getElementById('deal-selected').classList.add('show');
+    closeDealResults();
+    checkReady();
+    document.getElementById('result-box').classList.remove('show');
+  }
+
+  function selectContact(id, name, email) {
+    selectedContact = { id, name, email };
+    document.getElementById('contact-input').style.display = 'none';
+    document.getElementById('contact-selected-name').textContent = name;
+    document.getElementById('contact-selected-sub').textContent = email;
+    document.getElementById('contact-selected').classList.add('show');
+    closeContactResults();
+    checkReady();
+    document.getElementById('result-box').classList.remove('show');
+  }
+
+  function clearDeal() {
+    selectedDeal = null;
+    document.getElementById('deal-input').style.display = '';
+    document.getElementById('deal-input').value = '';
+    document.getElementById('deal-selected').classList.remove('show');
+    checkReady();
+    document.getElementById('result-box').classList.remove('show');
+  }
+
+  function clearContact() {
+    selectedContact = null;
+    document.getElementById('contact-input').style.display = '';
+    document.getElementById('contact-input').value = '';
+    document.getElementById('contact-selected').classList.remove('show');
+    checkReady();
+    document.getElementById('result-box').classList.remove('show');
+  }
+
+  function closeDealResults() {
+    document.getElementById('deal-results').classList.remove('open');
+  }
+
+  function closeContactResults() {
+    document.getElementById('contact-results').classList.remove('open');
+  }
+
+  function checkReady() {
+    document.getElementById('generate-btn').disabled = !(selectedDeal && selectedContact);
+  }
+
+  async function generateLink() {
+    const btn = document.getElementById('generate-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Wird generiert…';
+
+    try {
+      const url = `${GENERATE}?deal_id=${selectedDeal.id}&contact_id=${selectedContact.id}`;
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (data.success) {
+        document.getElementById('result-link').textContent = data.dr_link;
+        document.getElementById('result-box').classList.add('show');
+        document.getElementById('copy-msg').classList.remove('show');
+      } else {
+        alert('Fehler: ' + (data.error || 'Unbekannter Fehler'));
+      }
+    } catch(e) {
+      alert('Verbindungsfehler. Bitte erneut versuchen.');
+    }
+
+    btn.innerHTML = 'DR Link generieren';
+    btn.disabled = false;
+    checkReady();
+  }
+
+  function copyLink() {
+    const link = document.getElementById('result-link').textContent;
+    navigator.clipboard.writeText(link).then(() => {
+      document.getElementById('copy-msg').classList.add('show');
+      setTimeout(() => document.getElementById('copy-msg').classList.remove('show'), 3000);
+    });
+  }
+
+  function escHtml(str) {
+    return (str || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+</script>
+</body>
+</html>
